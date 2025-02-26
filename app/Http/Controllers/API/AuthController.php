@@ -82,10 +82,10 @@ class AuthController extends Controller
         $user = $request->user();
         $user->tokens()->delete();
 
-        return response()->json([
-            'status' => true,
-            'user' => $user,
-            'message' => 'You logged out successfully',
-        ], 200);
+        // return response()->json([
+        //     'status' => true,
+        //     'user' => $user,
+        //     'message' => 'You logged out successfully',
+        // ], 200);
     }
 };
