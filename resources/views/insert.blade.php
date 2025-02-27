@@ -33,41 +33,9 @@
             <label for="exampleInputPassword1">Password</label>
             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
         </div>
-        <div class="form-group form-check">
+        <div class="form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
-        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#submit').on('click', function(event) {
-                event.preventDefault(); // Prevent default form submission if inside a form
-
-                const email = $('#exampleInputEmail1').val();
-                const password = $('#exampleInputPassword1').val();
-
-                $.ajax({
-                    url: '/api/login',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        email: email,
-                        password: password
-                    }),
-                    success: function(response) {
-                        console.log('Login successful:', response);
-                        localStorage.setItem('api_token', response.token);
-                        window.location.href = "/table"
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Login failed:', error);
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-
-</html>
