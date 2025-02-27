@@ -10,37 +10,39 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+
     public function signup(Request $request)
     {
         $validateUser = Validator::make(
             $request->all(),
             [
                 'name' => 'required',
-                'email' => 'required|email|unique:user,email',
-                'password' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
             ]
         );
 
         if ($validateUser->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Validator Error',
-                'error' => $validateUser->errors()
+                'message' => 'Validation Error',
+                'errors' => $validateUser->errors()
             ], 401);
         }
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->nameemail,
-            'password' => $request->password
+            'email' => $request->email, 
+            'password' => bcrypt($request->password),
         ]);
 
         return response()->json([
             'status' => true,
-            'message' => 'user created successfully',
+            'message' => 'User created successfully',
             'user' => $user
-        ], 200);
+        ], 201); // 201 is better for resource creation
     }
+
 
     public function login(Request $request)
     {
@@ -82,10 +84,10 @@ class AuthController extends Controller
         $user = $request->user();
         $user->tokens()->delete();
 
-        // return response()->json([
-        //     'status' => true,
-        //     'user' => $user,
-        //     'message' => 'You logged out successfully',
-        // ], 200);
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+            'message' => 'You logged out successfully',
+        ], 200);
     }
 };
